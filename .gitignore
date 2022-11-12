@@ -1,7 +1,6 @@
+.git/
+dists/
 build/
-dist/
 easystats.egg-info/
-
-*test*
-*input*
+*.so
 
