@@ -16,4 +16,6 @@ void vec_zero(vec* v);
 
 int vec_read(vec* v);
 
+void* vec_init(vec* v, double* data, int dim);
+
 #endif

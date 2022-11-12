@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "vec.h"
 
+
 void vec_malloc(vec* v, int dim) {
     v->data = (double*) malloc(sizeof(double)*dim);
     v->dim = dim;
@@ -30,3 +31,9 @@ int vec_read(vec* v) {
     return n;
 }
 
+void* vec_init(vec* v, double* data, int dim) {
+    vec_malloc(v, dim);
+    for (int i = 0; i < dim; i++) {
+        v->data[i] = data[i];
+    }
+}
