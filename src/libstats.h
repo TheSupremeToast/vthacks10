@@ -9,4 +9,6 @@ PyObject* sd(PyObject* self, PyObject* args);
 
 PyObject* variance(PyObject* self, PyObject* args);
 
+PyObject* stdev(PyObject* self, PyObject* args);
+
 #endif
