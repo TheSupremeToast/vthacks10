@@ -1,4 +1,5 @@
 #include <Python.h>
+#include <float.h>
 #include "libstats.h"
 
 /*
@@ -10,7 +11,6 @@
 * All items in the list can be interpreted as doubles.
 */ 
 PyObject* mean(PyObject* self, PyObject* args) {
-
     double res = 0;
     PyObject* float_list;
     int len;
@@ -33,6 +33,7 @@ PyObject* mean(PyObject* self, PyObject* args) {
     res /= len;
     return Py_BuildValue("d", res);
 }
+
 /*
 * Takes a python list of doubles or ints and returns the variance of
 * the list. 
@@ -44,15 +45,15 @@ PyObject* mean(PyObject* self, PyObject* args) {
 PyObject* variance(PyObject* self, PyObject* args) {
     double mean = 0;
     PyObject* list; 
-    if(!PyArg_ParseTuple(args, "O", &list)){
+    if(!PyArg_ParseTuple(args, "O", &list)) {
         return NULL;
     }
     int len = PyObject_Length(list);
-    if(len <= 0){
+    if(len <= 0) {
         return NULL;
     }
     PyObject* item;
-    for (int i = 0; i < len; ++i){  
+    for (int i = 0; i < len; ++i) {  
         item = PyList_GetItem(list, i);
         if(!PyFloat_Check(item) && !PyLong_Check(item)) {
             continue;
@@ -61,9 +62,9 @@ PyObject* variance(PyObject* self, PyObject* args) {
     } 
     mean /= len;
     double variance = 0;
-    for (int i = 0; i < len; ++i){
+    for (int i = 0; i < len; ++i) {
         item = PyList_GetItem(list, i);
-        if(!PyFloat_Check(item) && !PyLong_Check(item)){
+        if(!PyFloat_Check(item) && !PyLong_Check(item)) {
             continue;
         }
         double squared = PyFloat_AsDouble(item) - mean;
@@ -80,12 +81,77 @@ PyObject* variance(PyObject* self, PyObject* args) {
 * Sanity checks: Variance succeeded. (see sanity checks on 
 * variance)
 */
-PyObject* stdev(PyObject* self, PyObject* args){
+PyObject* stdev(PyObject* self, PyObject* args) {
     PyObject* v = variance(self, args);
-    if(v!=NULL){
+    if(v != NULL) {
         return Py_BuildValue("d", sqrt(PyFloat_AsDouble(v)));
-    }else{
+    } 
+    else {
         return NULL;
     }
+}
+
+/*
+* Takes a Python list or array of doubles or ints and returns the 
+* minimum of the list.
+*
+* Sanity checks: Parameter sent is a Python list or array.
+* Length of the list is > 0 (mean for zero items is undefined?)
+* All items in the list can be interpreted as doubles.
+*/ 
+PyObject* min(PyObject* self, PyObject* args) {
+    double res = DBL_MAX;
+    PyObject* float_list;
+    if (!PyArg_ParseTuple(args, "O", &float_list)) {
+        return NULL;
+    }
+    int len = PyObject_Length(float_list);
+    if (len <= 0) {
+        return NULL;
+    }
+
+    PyObject* item;
+    for (int i = 0; i < len; i++) {
+        item = PyList_GetItem(float_list, i);
+        if (!PyFloat_Check(item) && !PyLong_Check(item)) {
+            continue;
+        }
+        if (res > PyFloat_AsDouble(item)) {
+            res = PyFloat_AsDouble(item);    
+        }
+    }
+    return Py_BuildValue("d", res);
+}
+
+/*
+* Takes a Python list or array of doubles or ints and returns the 
+* maximum of the list.
+*
+* Sanity checks: Parameter sent is a Python list or array.
+* Length of the list is > 0 (mean for zero items is undefined?)
+* All items in the list can be interpreted as doubles.
+*/ 
+PyObject* max(PyObject* self, PyObject* args) {
+    double res = 0;
+    PyObject* float_list;
+    if (!PyArg_ParseTuple(args, "O", &float_list)) {
+        return NULL;
+    }
+    int len = PyObject_Length(float_list);
+    if (len <= 0) {
+        return NULL;
+    }
+
+    PyObject* item;
+    for (int i = 0; i < len; i++) {
+        item = PyList_GetItem(float_list, i);
+        if (!PyFloat_Check(item) && !PyLong_Check(item)) {
+            continue;
+        }
+        if (res < PyFloat_AsDouble(item)) {
+            res = PyFloat_AsDouble(item);    
+        }
+    }
+    return Py_BuildValue("d", res);
 }
 
