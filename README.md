@@ -1,7 +1,7 @@
 # easystats
 A statistics library for Python written in C  
 
-### By: Patrick Dewey and Grady Orr  
+### By: Patrick and Grady  
 
 # Installation  
 1. change into `easystats` directory  
