@@ -13,12 +13,3 @@ Just import into your python project
 import easystats
 print(easystats.mean([1.5,2.64,3.31]))
 ```
-
-# Issues
-No known issues at this time
-
-# Future Plans  
-- ANOVA  
-- Linear Regression  
-- Full makefile uninstall
-
