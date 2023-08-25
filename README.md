@@ -1,5 +1,5 @@
 # easystats
-A statistics library for Python written in C  
+A statistics library for Python written in C during the VT Hacks X hackathon.
 
 ### By: Patrick and Grady  
 
